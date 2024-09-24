@@ -9,8 +9,8 @@ public:
     std::string opennedFile = "";
 
     //буферы
-	char* buf = NULL;
-	bool* colors = NULL;
+	std::vector<char> buf;
+	std::vector<bool> colors;
 
     //полезная информация об изображении
     int width = -1;

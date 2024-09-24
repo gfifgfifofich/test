@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
+#include <vector>
 #include "PictureReader.h"
 
 bool PictureReader::openBMP(const std::string& fileName)
@@ -21,12 +22,12 @@ bool PictureReader::openBMP(const std::string& fileName)
 	int sizeImage = infoHead.biSizeImage;
     
     // создать все буферы
-	buf = new char[sizeImage];
-	colors = new bool[pixelCount];
+	buf.resize(sizeImage);
+	colors.resize(pixelCount);
 
     //перейти на начало изображения, прочитать и закрыть
 	fs.seekg(head.bfOffBits);
-	fs.read(buf,sizeImage);
+	fs.read(buf.data(),sizeImage);
 	fs.close();
 
     // для отбора лишней информации из картинки (padding)
@@ -69,7 +70,7 @@ bool PictureReader::openBMP(const std::string& fileName)
 
 bool PictureReader::displayBMP()
 {
-    if(!opened || colors==NULL)
+    if(!opened || colors.size()<height*width)
         return false;
     // Изображение перевернутое, ибо bmp
 	for(int y=height-1;y>=0;y--)
@@ -97,13 +98,6 @@ bool PictureReader::closeBMP()
     // но в данном случае я реализовал закрытие как просто отчистку класса обратно в норму, даже если он сломан/удалено пару буферов
     opened = false; 
 
-    if(buf!=NULL)
-	    delete[] buf;
-    buf = NULL;
-
-    if(colors!=NULL)
-	    delete[] colors;
-    colors = NULL;
 
     return true;
 }

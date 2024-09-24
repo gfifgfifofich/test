@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
+#include <vector>
 #include "PictureReader.h"
 
 int main(int argc, char* argv[])
